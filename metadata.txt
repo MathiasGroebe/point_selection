@@ -1,0 +1,34 @@
+# This file contains metadata for your plugin.
+
+# This file should be included when you package your plugin.# Mandatory items:
+
+[general]
+name=Discrete Isolation
+qgisMinimumVersion=3.0
+description=Calculates the discrete isolation
+version=0.1
+author=Mathias Gröbe
+email=mathias.groebe@gmail.com
+
+about=Calculates the discrete isolation for points with numerical attributes
+
+tracker=https://github.com/MathiasGroebe/discrete_isolation/issues
+repository=https://github.com/MathiasGroebe/discrete_isolation/issues
+# End of mandatory metadata
+
+# Recommended items:
+
+hasProcessingProvider=yes
+# Uncomment the following line and add your changelog:
+# changelog=
+
+# Tags are comma separated with spaces allowed
+tags=Generalization, Selection, Points
+
+homepage=http://mathias-groebe.de
+category=Generalization
+icon=icon.png
+experimental=True
+deprecated=False
+server=False
+
