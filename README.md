@@ -1,2 +1,2 @@
-# discrete_isolation
-QGIS-Plugin for calculating the discrete isolatopn
+# Discrete Isolation
+QGIS-Plugin for calculating the discrete isolation
