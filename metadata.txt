@@ -3,9 +3,9 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=Discrete Isolation
+name=Point selection algorithms
 qgisMinimumVersion=3.0
-description=Calculates the discrete isolation distance
+description=Calculates different measures for selecting points, e.g., the discrete isolation 
 version=0.1
 author=Mathias Gröbe
 email=mathias.groebe@gmail.com
@@ -14,8 +14,8 @@ about=
 	Calculates the discrete isolation distance for points with numerical attributes. The concept is similar to the topographic isolation, but it uses only the points and not the terrain as continuous surfaces. The isolation is the distance from one point to the closest point with a higher attribute value. As attribute value can be used e.g., the elevation (for peaks) or the population (for populated places). By graduating the points by the isolation you can reach nearly spatially equally distributed point visualization, which can be also combined with other attributes. 
 	The isolation distance is always calculated in meters based on the ellipsoid.
 
-tracker=https://github.com/MathiasGroebe/discrete_isolation/issues
-repository=https://github.com/MathiasGroebe/discrete_isolation/issues
+tracker=https://github.com/MathiasGroebe/point_selection/issues
+repository=https://github.com/MathiasGroebe/point_selection
 # End of mandatory metadata
 
 # Recommended items:
