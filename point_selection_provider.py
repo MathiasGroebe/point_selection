@@ -31,8 +31,9 @@ __copyright__ = '(C) 2020 by Mathias Gröbe'
 __revision__ = '$Format:%H$'
 
 from qgis.core import QgsProcessingProvider
+from qgis.PyQt.QtGui import QIcon
 from .discrete_isolation_algorithm import DiscreteIsolationAlgorithm
-
+import os
 
 class PointSelectionProvider(QgsProcessingProvider):
 
@@ -79,7 +80,10 @@ class PointSelectionProvider(QgsProcessingProvider):
         Should return a QIcon which is used for your provider inside
         the Processing toolbox.
         """
-        return QgsProcessingProvider.icon(self)
+        return QIcon(self.svgIconPath())
+
+    def svgIconPath(self):
+        return os.path.dirname(__file__) + '/point_selection_icon.png'        
 
     def longName(self):
         """
@@ -88,4 +92,4 @@ class PointSelectionProvider(QgsProcessingProvider):
         (version 2.2.1)". This string should be localised. The default
         implementation returns the same string as name().
         """
-        return self.name()
+        return 'Measures for point selection'

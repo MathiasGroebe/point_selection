@@ -29,7 +29,7 @@ tags=Generalization, Selection, Points
 
 homepage=http://mathias-groebe.de
 category=Generalization
-icon=discrete_isolation_icon.png
+icon=point_selection_icon.png
 experimental=True
 deprecated=False
 server=False
