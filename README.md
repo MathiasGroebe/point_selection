@@ -1,7 +1,7 @@
 # Point selection algorithms
 
-QGIS-Plugin for different point selection alorithms:
+QGIS-Plugin for making different point selection algorithms available:
 
- - discrete isolation
- - label grid
- - functional distance
+ - Discrete isolation (Gröbe)
+ - Label grid (MapBox)
+ - Functional distance (Hormann)
