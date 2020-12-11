@@ -31,6 +31,7 @@ __copyright__ = '(C) 2020 by Mathias Gröbe'
 __revision__ = '$Format:%H$'
 
 from qgis.PyQt.QtCore import QCoreApplication
+from qgis.PyQt.QtGui import QIcon
 from qgis.core import (QgsProcessing,
                        QgsFeatureSink,
                        QgsProcessingAlgorithm,
@@ -40,21 +41,10 @@ from qgis.core import (QgsProcessing,
                        QgsProcessingParameterNumber,
                        QgsWkbTypes,
                        QgsDistanceArea)
-
+import os
 
 class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
-    """
-    This is an example algorithm that takes a vector layer and
-    creates a new identical one.
 
-    It is meant to be used as an example of how to create your own
-    algorithms and explain methods and variables used to do it. An
-    algorithm like this will be available in all elements, and there
-    is not need for additional work.
-
-    All Processing algorithms should extend the QgsProcessingAlgorithm
-    class.
-    """
 
     # Constants used to refer to parameters and outputs. They will be
     # used when calling the algorithm from another algorithm, or when
@@ -67,10 +57,9 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
     FIELD_FOR_ISOLATION = 'FIELD_FOR_ISOLATION'
 
     def initAlgorithm(self, config):
-        """
-        Here we define the inputs and output of the algorithm, along
-        with some other properties.
-        """
+
+        # Here we define the inputs and output of the algorithm
+
 
         # Input point layer
         self.addParameter(
@@ -122,9 +111,8 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
         )
 
     def processAlgorithm(self, parameters, context, feedback):
-        """
-        Here is where the processing itself takes place.
-        """
+
+        # Here is where the processing itself takes place.
 
         # Retrieve the feature source and sink.
         
@@ -198,20 +186,15 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
 
     def name(self):
         """
-        Returns the algorithm name, used for identifying the algorithm. This
-        string should be fixed for the algorithm, and must not be localised.
-        The name should be unique within each provider. Names should contain
-        lowercase alphanumeric characters only and no spaces or other
-        formatting characters.
+        Returns the algorithm name
         """
         return 'Discrete Isolation'
 
     def displayName(self):
         """
-        Returns the translated algorithm name, which should be used for any
-        user-visible display of the algorithm name.
+        Returns the translated algorithm name
         """
-        return self.tr(self.name())
+        return 'Discrete Isolation' 
 
     def group(self):
         """
@@ -229,6 +212,21 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
         formatting characters.
         """
         return ''
+        
+    def icon(self):
+        return QIcon(self.svgIconPath())
+
+
+    def svgIconPath(self):
+        return os.path.dirname(__file__) + '/discrete_isolation_icon.png'
+        
+    def shortHelpString(self):
+        file = os.path.dirname(__file__) + '/discrete_isolation.help'
+        if not os.path.exists(file):
+            return ''
+        with open(file) as helpfile:
+            help = helpfile.read()
+        return help        
 
     def tr(self, string):
         return QCoreApplication.translate('Processing', string)
