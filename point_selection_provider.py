@@ -33,6 +33,7 @@ __revision__ = '$Format:%H$'
 from qgis.core import QgsProcessingProvider
 from qgis.PyQt.QtGui import QIcon
 from .discrete_isolation_algorithm import DiscreteIsolationAlgorithm
+from .functional_distance_algorithm import FunctionalDistanceAlgorithm
 import os
 
 class PointSelectionProvider(QgsProcessingProvider):
@@ -55,8 +56,7 @@ class PointSelectionProvider(QgsProcessingProvider):
         Loads all algorithms belonging to this provider.
         """
         self.addAlgorithm(DiscreteIsolationAlgorithm())
-        # add additional algorithms here
-        # self.addAlgorithm(MyOtherAlgorithm())
+        self.addAlgorithm(FunctionalDistanceAlgorithm())
 
     def id(self):
         """
