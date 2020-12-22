@@ -34,6 +34,7 @@ from qgis.core import QgsProcessingProvider
 from qgis.PyQt.QtGui import QIcon
 from .discrete_isolation_algorithm import DiscreteIsolationAlgorithm
 from .functional_distance_algorithm import FunctionalDistanceAlgorithm
+from .label_grid_algorithm import LabelGridAlgorithm
 import os
 
 class PointSelectionProvider(QgsProcessingProvider):
@@ -57,6 +58,7 @@ class PointSelectionProvider(QgsProcessingProvider):
         """
         self.addAlgorithm(DiscreteIsolationAlgorithm())
         self.addAlgorithm(FunctionalDistanceAlgorithm())
+        self.addAlgorithm(LabelGridAlgorithm())
 
     def id(self):
         """

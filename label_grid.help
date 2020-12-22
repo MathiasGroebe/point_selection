@@ -1,0 +1,3 @@
+Creates a grid and check, which point is contained by which grid cell. Afterward, the highest point in each will get the value 1 and all others the value 0.
+
+Please consider that the grid relies on the projection of the point layer, and the size of the grid cell is created according to the units of the CRS.
