@@ -1,3 +1,5 @@
 Creates a grid and check, which point is contained by which grid cell. Afterward, the highest point in each will get the value 1 and all others the value 0.
 
+You can choose which type of grid you prefer for computing: Rectangles, diamonds or hexagons. The tool will create them according to your defined size. Please provide two numerical columns for storing the id of the grid cell (can be used for inspection, the value of -1 means that the point lays in no grid cell) and none for storing the selection.
+
 Please consider that the grid relies on the projection of the point layer, and the size of the grid cell is created according to the units of the CRS.

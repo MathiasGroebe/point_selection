@@ -5,7 +5,7 @@
 [general]
 name=Point selection algorithms
 qgisMinimumVersion=3.0
-description=Calculates different measures for selecting points, e.g., the discrete isolation 
+description=Calculates different measures for selecting points, e.g., the discrete isolation, functional distance and label grid
 version=0.1
 author=Mathias Gröbe
 email=mathias.groebe@gmail.com
