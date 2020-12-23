@@ -56,7 +56,6 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
     # calling from the QGIS console.
 
     OUTPUT = 'OUTPUT'
-    #OUTPUT_GRID = 'OUTPUT_GRID'
     INPUT = 'INPUT'
     VALUE_FIELD = 'VALUE_FIELD'
     FIELD_FOR_GRID_ID = 'FIELD_FOR_GRID_ID'
@@ -82,7 +81,7 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterField(
             self.VALUE_FIELD,
-            'Field with numeric values',
+            self.tr('Field with numeric values'),
             None,
             self.INPUT,
             QgsProcessingParameterField.Numeric)
@@ -92,7 +91,7 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterNumber(
             self.GRID_SIZE,
-            'Size of grid cells',
+            self.tr('Size of grid cells'),
             QgsProcessingParameterNumber.Integer,
             10000,
             False,
@@ -113,7 +112,7 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterField(
             self.FIELD_FOR_GRID_ID,
-            'Field for storing the grid cell ID',
+            self.tr('Field for storing the id of the used grid cell'),
             None,
             self.INPUT,
             QgsProcessingParameterField.Numeric)
@@ -123,7 +122,7 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterField(
             self.FIELD_FOR_SELECTION,
-            'Field for marking the selected points',
+            self.tr('Field for marking the selected points'),
             None,
             self.INPUT,
             QgsProcessingParameterField.Numeric)
@@ -137,13 +136,6 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
                 self.tr('Label Grid Points')
             )
         )
-        '''
-        self.addParameter(
-            QgsProcessingParameterFeatureSink(
-                self.OUTPUT_GRID,
-                self.tr('Label Grid')
-            )
-              '''
 
     def processAlgorithm(self, parameters, context, feedback):
 
