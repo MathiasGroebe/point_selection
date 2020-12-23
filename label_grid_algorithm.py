@@ -184,13 +184,18 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
         
         # Create grid
         grid = processing.run("qgis:creategrid", {'CRS': source.sourceCrs(), 'TYPE': creategrid_grid_type, 'EXTENT': source.sourceExtent(), 'HSPACING': grid_size, 'VSPACING': grid_size, 'HOVERLAY': 0, 'VOVERLAY': 0, 'OUTPUT': 'memory:'})
-                
-        # check which point is in which grid cell
 
+        # Compute the number of steps to display within the progress bar and
+        # get features from source
+        total = 100.0 / source.featureCount() if source.featureCount() else 0
+
+        # check which point is in which grid cell
         points = source.getFeatures()
         point_dict = {}
 
-        for point in points:
+        for current, point in enumerate(points):
+            if feedback.isCanceled():
+                break            
             grid_cells = grid['OUTPUT'].getFeatures()
             check = True
             for cell in grid_cells:
@@ -202,12 +207,16 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
             if check:
                 point_dict[point.id()] = [-1, -9999]
 
+            # Update progress
+            feedback.setProgress(int(current * total))
+
         
         # search for highest value
-
         grid_dict = {}
 
         for point_key, point_value in point_dict.items():
+            if feedback.isCanceled():
+                break
             # check if grid is already known
             if point_value[0] in grid_dict:
                 # if known, check if dict contains highest value
@@ -219,13 +228,8 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
                 # add point with grid_id and value to dict
                 grid_dict[point_value[0]] = [point_value[1], point_key]
                 
-
-        # Compute the number of steps to display within the progress bar and
-        # get features from source
-        total = 100.0 / source.featureCount() if source.featureCount() else 0
-        features = source.getFeatures()
-
         # bring values to features
+        features = source.getFeatures()
 
         for current, feature in enumerate(features):
             # Stop the algorithm if cancel button has been clicked
