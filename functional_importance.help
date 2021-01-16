@@ -3,3 +3,5 @@ Calculates the functional importance after Hormanns idea and store the highest d
 The field with numeric values should be in case of populated place the population number. Beta is the diameter of the circle around the point in meter, there tend the function value towards zero. Use this parameter to ensure a minimum distance between places, which should be selected.
 
 All distances a calculated on the ellipsoid, so the result is not related to a specific map projection.
+
+More information can be found here: http://imagico.de/map/osm_populated_en.php
