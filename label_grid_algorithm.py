@@ -35,7 +35,9 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.core import (QgsProcessing,
                        QgsFeatureSink,
                        QgsProcessingAlgorithm,
+                       QgsProcessingException,
                        QgsProcessingParameterFeatureSource,
+                       QgsProcessingParameterVectorDestination,
                        QgsProcessingParameterFeatureSink,
                        QgsProcessingParameterField,
                        QgsProcessingParameterNumber,
@@ -45,7 +47,7 @@ from qgis.core import (QgsProcessing,
                        QgsFields,
                        QgsField,
                        QgsFeature,
-                       QgsProcessingUtils)
+                       QgsProcessingUtils, QgsMessageLog)
 import os, processing
 
 class LabelGridAlgorithm(QgsProcessingAlgorithm):
@@ -55,7 +57,8 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
     # used when calling the algorithm from another algorithm, or when
     # calling from the QGIS console.
 
-    OUTPUT = 'OUTPUT'
+    OUTPUT_POINTS = 'OUTPUT_POINTS'
+    OUTPUT_GRID = 'OUTPUT_GRID'
     INPUT = 'INPUT'
     MINMAX = 'MINMAX'
     VALUE_FIELD = 'VALUE_FIELD'
@@ -147,6 +150,14 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
             )
         )
 
+        # Output grid
+        self.addParameter(
+            QgsProcessingParameterFeatureSink(
+                self.OUTPUT_GRID,
+                self.tr('Label Grid')
+            )
+        )        
+
     def processAlgorithm(self, parameters, context, feedback):
 
         # Here is where the processing itself takes place.
@@ -162,7 +173,7 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
         # new_fields.append(QgsField("grid_id", QVariant.Int))
         # out_fields = QgsProcessingUtils.combineFields(in_fields, new_fields)
         
-        (sink, dest_id) = self.parameterAsSink(parameters, self.OUTPUT,
+        (sink, dest_id) = self.parameterAsSink(parameters, self.OUTPUT_POINTS,
                 context, source.fields(), source.wkbType(), source.sourceCrs())
                 
         if source is None:
@@ -186,7 +197,20 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
         if grid_type == '2': creategrid_grid_type = 4 # Hexagon
         
         # Create grid
-        grid = processing.run("qgis:creategrid", {'CRS': source.sourceCrs(), 'TYPE': creategrid_grid_type, 'EXTENT': source.sourceExtent().buffered(float(grid_size) * 0.66), 'HSPACING': grid_size, 'VSPACING': grid_size, 'HOVERLAY': 0, 'VOVERLAY': 0, 'OUTPUT': 'memory:'})
+        grid = processing.run(
+        "qgis:creategrid", 
+        {'CRS': source.sourceCrs(), 
+        'TYPE': creategrid_grid_type, 
+        'EXTENT': source.sourceExtent().buffered(float(grid_size) * 0.66), 
+        'HSPACING': grid_size, 
+        'VSPACING': grid_size, 
+        'HOVERLAY': 0, 
+        'VOVERLAY': 0, 
+        'OUTPUT': parameters[self.OUTPUT_GRID]
+        },
+        context=context,
+        feedback=feedback
+        )['OUTPUT']
 
         # Compute the number of steps to display within the progress bar and
         # get features from source
@@ -197,10 +221,24 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
         point_dict = {}
         # point id, grid id, value
 
+        (sink2, dest_id2) = self.parameterAsSink(
+                    parameters,
+                    self.OUTPUT_GRID,
+                    context,
+                    grid.fields(),
+                    grid.wkbType(),
+                    grid.sourceCrs())
+        
+        # Export grid
+        grid_cells = grid.getFeatures()
+        for cell in grid_cells:
+            sink2.addFeature(cell, QgsFeatureSink.FastInsert)
+        
         for current, point in enumerate(points):
             if feedback.isCanceled():
-                break            
-            grid_cells = grid['OUTPUT'].getFeatures()
+                break    
+                
+            grid_cells = grid.getFeatures()
             check = True
             for cell in grid_cells:
                 if cell.geometry().contains(point.geometry()):
@@ -280,7 +318,9 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
             feedback.setProgress(int(current * total))
 
         # Return the results of the algorithm.
-        return {self.OUTPUT: dest_id}
+        return {self.OUTPUT_POINTS: dest_id,
+                self.OUTPUT_GRID: dest_id2}
+         # TODO get reason for meaningless error       
 
     def name(self):
         """
