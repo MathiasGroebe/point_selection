@@ -139,11 +139,10 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
             QgsProcessingParameterField.Numeric)
         )        
         
-        # We add a feature sink in which to store our processed features 
-        
+        # Output points
         self.addParameter(
             QgsProcessingParameterFeatureSink(
-                self.OUTPUT,
+                self.OUTPUT_POINTS,
                 self.tr('Label Grid Points')
             )
         )
@@ -187,7 +186,7 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
         if grid_type == '2': creategrid_grid_type = 4 # Hexagon
         
         # Create grid
-        grid = processing.run("qgis:creategrid", {'CRS': source.sourceCrs(), 'TYPE': creategrid_grid_type, 'EXTENT': source.sourceExtent(), 'HSPACING': grid_size, 'VSPACING': grid_size, 'HOVERLAY': 0, 'VOVERLAY': 0, 'OUTPUT': 'memory:'})
+        grid = processing.run("qgis:creategrid", {'CRS': source.sourceCrs(), 'TYPE': creategrid_grid_type, 'EXTENT': source.sourceExtent().buffered(float(grid_size) * 0.66), 'HSPACING': grid_size, 'VSPACING': grid_size, 'HOVERLAY': 0, 'VOVERLAY': 0, 'OUTPUT': 'memory:'})
 
         # Compute the number of steps to display within the progress bar and
         # get features from source
