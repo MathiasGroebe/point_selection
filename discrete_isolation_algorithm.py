@@ -39,6 +39,7 @@ from qgis.core import (QgsProcessing,
                        QgsProcessingParameterFeatureSink,
                        QgsProcessingParameterField,
                        QgsProcessingParameterNumber,
+                       QgsProcessingParameterEnum,
                        QgsWkbTypes,
                        QgsDistanceArea)
 import os
@@ -55,6 +56,7 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
     ISOLATION_VALUE_FIELD = 'ISOLATION_VALUE_FIELD'
     MAX_ISOLATION = 'MAX_ISOLATION'
     FIELD_FOR_ISOLATION = 'FIELD_FOR_ISOLATION'
+    MINMAX = 'MINMAX'
 
     def initAlgorithm(self, config):
 
@@ -89,7 +91,17 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
             1000000,
             False,
             1,)
-        )     
+        ) 
+
+        # Select min or max
+        self.addParameter(
+            QgsProcessingParameterEnum(
+            self.MINMAX,
+            self.tr('Use max or min values'),
+            options = ['Max', 'Min'],
+            defaultValue = 0,
+            optional = False)
+        )            
         
         # Chose field to store isolation values
         self.addParameter(
@@ -102,7 +114,6 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
         )
         
         # We add a feature sink in which to store our processed features 
-        
         self.addParameter(
             QgsProcessingParameterFeatureSink(
                 self.OUTPUT,
@@ -130,6 +141,7 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
         max_isolation = self.parameterAsInt(parameters, self.MAX_ISOLATION, context)
         isolation_value_field = self.parameterAsString(parameters, self.ISOLATION_VALUE_FIELD, context)
         field_for_isolation = self.parameterAsString(parameters, self.FIELD_FOR_ISOLATION, context)
+        minmax = self.parameterAsString(parameters, self.MINMAX, context)
         
         # init distance measuring
         distance = QgsDistanceArea()
@@ -160,12 +172,26 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
                     a = a_feature.attribute(isolation_value_field)
                     f = feature.attribute(isolation_value_field)
 
-                    if f < a :
-                        # in case of a higher values calculate distance
-                        a_distance = distance.measureLine(feature.geometry().asPoint(),a_feature.geometry().asPoint())
-                        # if distance lower than maximum distance use the lower distance and go on
-                        if a_distance < isolation_distance:
-                            isolation_distance = a_distance
+                    # Min or Max
+                    # If min is chosen
+                    if minmax == '1':
+
+                        if f > a :
+                            # in case of a lower value calculate distance
+                            a_distance = distance.measureLine(feature.geometry().asPoint(),a_feature.geometry().asPoint())
+                            # if distance lower than maximum distance use the lower distance and go on
+                            if a_distance < isolation_distance:
+                                isolation_distance = a_distance                        
+
+                    # if max is chose or somewhat else happens
+                    else:
+
+                        if f < a :
+                            # in case of a higher value calculate distance
+                            a_distance = distance.measureLine(feature.geometry().asPoint(),a_feature.geometry().asPoint())
+                            # if distance lower than maximum distance use the lower distance and go on
+                            if a_distance < isolation_distance:
+                                isolation_distance = a_distance
                         
                 
                 # save isolation distance into attribute table  

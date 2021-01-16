@@ -57,6 +57,7 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
 
     OUTPUT = 'OUTPUT'
     INPUT = 'INPUT'
+    MINMAX = 'MINMAX'
     VALUE_FIELD = 'VALUE_FIELD'
     FIELD_FOR_GRID_ID = 'FIELD_FOR_GRID_ID'
     FIELD_FOR_SELECTION = 'FIELD_FOR_SELECTION'
@@ -86,6 +87,16 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
             self.INPUT,
             QgsProcessingParameterField.Numeric)
         )
+
+        # Select min or max
+        self.addParameter(
+            QgsProcessingParameterEnum(
+            self.MINMAX,
+            self.tr('Use max or min values'),
+            options = ['Max', 'Min'],
+            defaultValue = 0,
+            optional = False)
+        )  
         
         # Set grid size
         self.addParameter(
@@ -163,6 +174,7 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
                 
         # Get variables
         value_field = self.parameterAsString(parameters, self.VALUE_FIELD, context)
+        minmax_input = self.parameterAsString(parameters, self.MINMAX, context)
         field_for_selection = self.parameterAsString(parameters, self.FIELD_FOR_SELECTION, context)
         field_for_grid_id = self.parameterAsString(parameters, self.FIELD_FOR_GRID_ID, context)
         grid_type = self.parameterAsString(parameters, self.GRID_TYPE, context)
@@ -170,9 +182,9 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
         
         # Translate grid type
         creategrid_grid_type = 2
-        if grid_type == 0: creategrid_grid_type = 2 # Rectangle
-        if grid_type == 1: creategrid_grid_type = 3 # Diamond
-        if grid_type == 2: creategrid_grid_type = 4 # Hexagon
+        if grid_type == '0': creategrid_grid_type = 2 # Rectangle
+        if grid_type == '1': creategrid_grid_type = 3 # Diamond
+        if grid_type == '2': creategrid_grid_type = 4 # Hexagon
         
         # Create grid
         grid = processing.run("qgis:creategrid", {'CRS': source.sourceCrs(), 'TYPE': creategrid_grid_type, 'EXTENT': source.sourceExtent(), 'HSPACING': grid_size, 'VSPACING': grid_size, 'HOVERLAY': 0, 'VOVERLAY': 0, 'OUTPUT': 'memory:'})
@@ -184,6 +196,7 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
         # check which point is in which grid cell
         points = source.getFeatures()
         point_dict = {}
+        # point id, grid id, value
 
         for current, point in enumerate(points):
             if feedback.isCanceled():
@@ -197,28 +210,47 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
 
             # if point is not cotained by one grid cell set values
             if check:
-                point_dict[point.id()] = [-1, -9999]
+                point_dict[point.id()] = [-1, None]
 
             # Update progress
             feedback.setProgress(int(current * total))
 
         
-        # search for highest value
+        # search for highest/lowest value
         grid_dict = {}
+        # grid id, highes/lowest value, id of point
+        
+        # Handle input for min/max
+        minmax = 'max'
+        if minmax_input == '1': minmax = 'min'  
+        
 
         for point_key, point_value in point_dict.items():
             if feedback.isCanceled():
                 break
-            # check if grid is already known
-            if point_value[0] in grid_dict:
-                # if known, check if dict contains highest value
-                if point_value[1] > grid_dict.get(point_value[0])[0]:
-                    # update value
+                
+            # stop if no value or no grid cell
+            if point_value[1] is not None:
+             
+                
+                # check if grid is already known
+                if point_value[0] in grid_dict:
+
+                    if minmax == 'min':
+                        # if known, check if dict contains lowest value
+                        if point_value[1] < grid_dict.get(point_value[0])[0]:
+                            # update value
+                            grid_dict[point_value[0]] = [point_value[1], point_key]
+
+                    if minmax == 'max':
+                        # if known, check if dict contains highest value
+                        if point_value[1] > grid_dict.get(point_value[0])[0]:
+                            # update value
+                            grid_dict[point_value[0]] = [point_value[1], point_key]
+                # add point
+                else:
+                    # add point with grid_id and value to dict
                     grid_dict[point_value[0]] = [point_value[1], point_key]
-            # add point
-            else:
-                # add point with grid_id and value to dict
-                grid_dict[point_value[0]] = [point_value[1], point_key]
                 
         # bring values to features
         features = source.getFeatures()
@@ -234,9 +266,12 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
                 # write grid_id to point
                 feature[field_for_grid_id] = point_dict.get(feature.id())[0]
                 # check if point is selected
-                if grid_dict.get(grid_id)[1] == feature.id():
-                    feature[field_for_selection] = 1
-                else:
+                try:
+                    if grid_dict.get(grid_id)[1] == feature.id():
+                        feature[field_for_selection] = 1
+                    else:
+                        feature[field_for_selection] = 0
+                except:
                     feature[field_for_selection] = 0
 
             # Add a feature in the sink
