@@ -5,14 +5,14 @@
 [general]
 name=Point selection algorithms
 qgisMinimumVersion=3.0
-description=Calculates different measures for selecting points, e.g., the discrete isolation, functional distance and label grid
+description=Calculates different measures for selecting points, e.g., the discrete isolation, functional importance and label grid
 version=0.1
 author=Mathias Gröbe
 email=mathias.groebe@gmail.com
 
 about=
 	Calculates the discrete isolation distance for points with numerical attributes. The concept is similar to the topographic isolation, but it uses only the points and not the terrain as continuous surfaces. The isolation is the distance from one point to the closest point with a higher attribute value. As attribute value can be used e.g., the elevation (for peaks) or the population (for populated places). By graduating the points by the isolation you can reach nearly spatially equally distributed point visualization, which can be also combined with other attributes. 
-	As another approach the functional distance method from Hormann is implemented. In this case the population and a diameter creates a function, which is compared with all points and the difference of function values is stored in the attribute table. If the value is greater zero, the point should be shown but can also graduate by the values. 
+	As another approach the functional importance method from Hormann is implemented. In this case the population and a diameter creates a function, which is compared with all points and the difference of function values is stored in the attribute table. If the value is greater zero, the point should be shown but can also graduate by the values. 
 	The label grid function selects the point with the highest value in a grid cell. First used by MapBox and implemented in PostgreSQL/PostGIS now in QGIS. The grid stays invisible and is created by the tool.
 
 tracker=https://github.com/MathiasGroebe/point_selection/issues

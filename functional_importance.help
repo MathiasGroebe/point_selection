@@ -1,4 +1,4 @@
-Calculates the functional distance after Hormanns idea and store the highest difference of function values. You can choose this field, but it should already exist.
+Calculates the functional importance after Hormanns idea and store the highest difference of function values. You can choose this field, but it should already exist.
 
 The field with numeric values should be in case of populated place the population number. Beta is the diameter of the circle around the point in meter, there tend the function value towards zero. Use this parameter to ensure a minimum distance between places, which should be selected.
 
