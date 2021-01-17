@@ -81,6 +81,16 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
             self.INPUT,
             QgsProcessingParameterField.Numeric)
         )
+
+        # Select min or max
+        self.addParameter(
+            QgsProcessingParameterEnum(
+            self.MINMAX,
+            self.tr('Use max or min values'),
+            options = ['Max', 'Min'],
+            defaultValue = 0,
+            optional = False)
+        )         
         
         # Max isolation value and search distance
         self.addParameter(
@@ -91,16 +101,6 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
             1000000,
             False,
             1,)
-        ) 
-
-        # Select min or max
-        self.addParameter(
-            QgsProcessingParameterEnum(
-            self.MINMAX,
-            self.tr('Use max or min values'),
-            options = ['Max', 'Min'],
-            defaultValue = 0,
-            optional = False)
         )            
         
         # Chose field to store isolation values
