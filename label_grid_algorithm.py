@@ -303,12 +303,9 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
                 # write grid_id to point
                 feature[field_for_grid_id] = point_dict.get(feature.id())[0]
                 # check if point is selected
-                try:
-                    if grid_dict.get(grid_id)[1] == feature.id():
-                        feature[field_for_selection] = 1
-                    else:
-                        feature[field_for_selection] = 0
-                except:
+                if grid_dict.get(grid_id)[1] == feature.id():
+                    feature[field_for_selection] = 1
+                else:
                     feature[field_for_selection] = 0
 
             # Add a feature in the sink
