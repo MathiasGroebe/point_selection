@@ -40,7 +40,7 @@ The output can be visualized with a categorized layer; you can also add the grid
 
 ![Example output from the Label grid function](example_images/label_grid_example.png)
 
-#### How to get and prepeare the example data
+### How to get and prepeare the example data
 
 The examples are made with data about peaks from OpenStreetMap. You can also use other numerical attributes for points, e.g., the population for cities. For getting the data, you can use the [Overpass API](https://overpass-turbo.eu/). If you want to extract the peaks, you have to search for the tag combination `natural=peak`. A query like this will do this:
 
