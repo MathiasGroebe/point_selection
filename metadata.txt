@@ -6,7 +6,7 @@
 name=Point selection algorithms
 qgisMinimumVersion=3.0
 description=Calculates different measures for selecting points, e.g., the discrete isolation, functional importance and label grid
-version=0.1
+version=0.2.1
 author=Mathias Gröbe
 email=mathias.groebe@gmail.com
 
