@@ -40,4 +40,23 @@ The output can be visualized with a categorized layer; you can also add the grid
 
 ![Example output from the Label grid function](example_images/label_grid_example.png)
 
-The example is based on peaks from OpenStreetMap. You can also use other numerical attributes for points, e.g., the population for cities.
+#### How to get and prepeare the example data
+
+The examples are made with data about peaks from OpenStreetMap. You can also use other numerical attributes for points, e.g., the population for cities. For getting the data, you can use the [Overpass API](overpass-turbo.eu/). If you want to extract the peaks, you have to search for the tag combination `natural=peak`. A query like this will do this:
+
+```
+[out:json][timeout:25];
+// gather results
+(
+  // query part for: “natural=peak”
+  node["natural"="peak"]({{bbox}});
+  way["natural"="peak"]({{bbox}});
+  relation["natural"="peak"]({{bbox}});
+);
+// print results
+out body;
+>;
+out skel qt;
+```
+
+Better do this for a small than a larger region, or you will run into problems. Afterward, export the result as GeoJSON and load it into QGIS. For using the Label grid, you have to project the data, the Webmercator is always possible, but not the right choice in general. Additionally, you have to convert the `ele` attribute from text to number with the help of the field calculator and this ` try(to_real("ele"), 0)` expression. To store the isolation, importance, selection, etc., you have to add another numeric field to the data.
