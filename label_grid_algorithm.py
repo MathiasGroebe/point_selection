@@ -353,10 +353,10 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
 
 
     def svgIconPath(self):
-        return os.path.dirname(__file__) + '/label_grid_icon.png'
+        return os.path.dirname(__file__) + '/icon/label_grid_icon.png'
         
     def shortHelpString(self):
-        file = os.path.dirname(__file__) + '/label_grid.help'
+        file = os.path.dirname(__file__) + '/help/label_grid.help'
         if not os.path.exists(file):
             return ''
         with open(file) as helpfile:

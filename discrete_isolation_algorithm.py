@@ -244,10 +244,10 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
 
 
     def svgIconPath(self):
-        return os.path.dirname(__file__) + '/discrete_isolation_icon.png'
+        return os.path.dirname(__file__) + '/icon/discrete_isolation_icon.png'
         
     def shortHelpString(self):
-        file = os.path.dirname(__file__) + '/discrete_isolation.help'
+        file = os.path.dirname(__file__) + '/help/discrete_isolation.help'
         if not os.path.exists(file):
             return ''
         with open(file) as helpfile:

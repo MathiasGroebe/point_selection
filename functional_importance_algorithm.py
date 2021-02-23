@@ -228,10 +228,10 @@ class FunctionalImportanceAlgorithm(QgsProcessingAlgorithm):
 
 
     def svgIconPath(self):
-        return os.path.dirname(__file__) + '/functional_importance_icon.png'
+        return os.path.dirname(__file__) + '/icon/functional_importance_icon.png'
         
     def shortHelpString(self):
-        file = os.path.dirname(__file__) + '/functional_importance.help'
+        file = os.path.dirname(__file__) + '/help/functional_importance.help'
         if not os.path.exists(file):
             return ''
         with open(file) as helpfile:
