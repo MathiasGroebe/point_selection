@@ -160,18 +160,8 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
 
     def processAlgorithm(self, parameters, context, feedback):
 
-        # Here is where the processing itself takes place.
-
-        # Retrieve the feature source and sink.
-        
+        # Retrieve the feature source and sink. 
         source = self.parameterAsSource(parameters, self.INPUT, context)
-        
-        # Add new fields and combine with existing ones
-        # See https://github.com/qgis/QGIS/blob/master/python/plugins/processing/algs/qgis/Climb.py
-        # in_fields = source.fields()
-        # new_fields = QgsFields()
-        # new_fields.append(QgsField("grid_id", QVariant.Int))
-        # out_fields = QgsProcessingUtils.combineFields(in_fields, new_fields)
         
         (sink, dest_id) = self.parameterAsSink(parameters, self.OUTPUT_POINTS,
                 context, source.fields(), source.wkbType(), source.sourceCrs())
