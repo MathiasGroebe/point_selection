@@ -165,7 +165,8 @@ class FunctionalImportanceAlgorithm(QgsProcessingAlgorithm):
                         f = float(str(feature.attribute(attribute_field)))
                             
                         # calculate distance and function values    
-                        af_distance = distance.measureLine(feature.geometry().asPoint(),a_feature.geometry().asPoint())
+                        af_distance = distance.measureLine(feature.geometry().asPoint(), a_feature.geometry().asPoint())
+                        # TODO: improve formula
                         a_function_value = a * math.exp(-1 * af_distance ** 2 / beta)
                         f_function_value = f * math.exp(-1 * af_distance ** 2 / beta)
 
