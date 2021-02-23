@@ -317,7 +317,7 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
         # Return the results of the algorithm.
         return {self.OUTPUT_POINTS: dest_id,
                 self.OUTPUT_GRID: dest_id2}
-         # TODO get reason for meaningless error       
+         # TODO find reason for meaningless error       
 
     def name(self):
         """

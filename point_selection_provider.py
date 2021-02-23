@@ -85,7 +85,7 @@ class PointSelectionProvider(QgsProcessingProvider):
         return QIcon(self.svgIconPath())
 
     def svgIconPath(self):
-        return os.path.dirname(__file__) + '/point_selection_icon.png'        
+        return os.path.dirname(__file__) + '/icon/point_selection_icon.png'        
 
     def longName(self):
         """
