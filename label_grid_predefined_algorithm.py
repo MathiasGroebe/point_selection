@@ -289,7 +289,7 @@ class LabelGridPredefinedAlgorithm(QgsProcessingAlgorithm):
         return os.path.dirname(__file__) + '/icon/label_grid_icon.png'
         
     def shortHelpString(self):
-        file = os.path.dirname(__file__) + '/help/label_grid.help'
+        file = os.path.dirname(__file__) + '/help/label_grid_predefined.help'
         if not os.path.exists(file):
             return ''
         with open(file) as helpfile:
