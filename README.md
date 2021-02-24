@@ -40,7 +40,7 @@ The output can be visualized with a categorized layer; you can also add the grid
 
 ![Example output from the Label grid function](example_images/label_grid_example.png)
 
-It is also possible to use any other grid or polygon layer for selection the highest/lowest value in each polygon by using the "Label Grid with Predefinded" algorithm in.
+It is also possible to use any other grid or polygon layer for selecting the highest/lowest value in each polygon by using the "Label Grid with Predefined" algorithm.
 
 ![Example for the usage of other polygons with the Label grid function](example_images/label_grid_predefined_grid.png)
 
