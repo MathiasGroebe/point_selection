@@ -182,7 +182,7 @@ class LabelGridPredefinedAlgorithm(QgsProcessingAlgorithm):
 
             # if point is not cotained by one grid cell set values
             if check:
-                point_dict[point.id()] = [-1, None]
+                point_dict[point.id()] = [-1, -1]
 
             # Update progress
             feedback.setProgress(int(current * total))
