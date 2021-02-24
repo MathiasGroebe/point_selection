@@ -6,7 +6,7 @@
 name=Point selection algorithms
 qgisMinimumVersion=3.0
 description=Calculates different measures for selecting points, e.g., the discrete isolation, functional importance and label grid
-version=0.2.1
+version=0.2.2
 author=Mathias Gröbe
 email=mathias.groebe@gmail.com
 
@@ -24,7 +24,8 @@ repository=https://github.com/MathiasGroebe/point_selection
 
 hasProcessingProvider=yes
 # Uncomment the following line and add your changelog:
-# changelog=
+changelog=
+	0.2.2 Label grid is now also possible with an predefined grid
 
 # Tags are comma separated with spaces allowed
 tags=Generalization, Analysis, Selection, Point

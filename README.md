@@ -40,6 +40,10 @@ The output can be visualized with a categorized layer; you can also add the grid
 
 ![Example output from the Label grid function](example_images/label_grid_example.png)
 
+It is also possible to use any other grid or polygon layer for selection the highest/lowest value in each polygon by using the "Label Grid with Predefinded" algorithm in.
+
+![Example for the usage of other polygons with the Label grid function](example_images/label_grid_predefined_grid.png)
+
 ### How to get and prepeare the example data
 
 The examples are made with data about peaks from OpenStreetMap. You can also use other numerical attributes for points, e.g., the population for cities. For getting the data, you can use the [Overpass API](https://overpass-turbo.eu/). If you want to extract the peaks, you have to search for the tag combination `natural=peak`. A query like this will do this:
