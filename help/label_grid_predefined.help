@@ -1,4 +1,4 @@
-Uses a predefined grid and check which point is contained by which grid cell. Afterward, the highest (Max option) point or the lowest (Min option) value in each will set to 1 and all others to 0 in the column for the selected points.
+Uses a predefined polygon or grid and check which point is contained by which polygon or grid cell. Afterward, the highest (Max option) point or the lowest (Min option) value in each polygon will set to 1 and all others to 0 in the column for the selected points.
 
 Please provide two numerical columns for storing the grid cell's id and none for holding the selection. The column for the grid id can be used for inspection; a value of -1 means that the point lays in no grid cell.
 

@@ -74,7 +74,7 @@ class LabelGridPredefinedAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterFeatureSource(
                 self.INPUT_GRID,
-                self.tr('Input grid layer'),
+                self.tr('Input polygon layer'),
                 [QgsProcessing.TypeVectorPolygon]
             )
         )
@@ -133,7 +133,7 @@ class LabelGridPredefinedAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterFeatureSink(
                 self.OUTPUT_POINTS,
-                self.tr('Label Grid Points')
+                self.tr('Point in Polygon')
             )
         )       
 
@@ -256,13 +256,13 @@ class LabelGridPredefinedAlgorithm(QgsProcessingAlgorithm):
         """
         Returns the algorithm name
         """
-        return 'Label Grid with Predefined Grid'
+        return 'Point in Polygon'
 
     def displayName(self):
         """
         Returns the translated algorithm name
         """
-        return 'Label Grid with Predefined Grid' 
+        return 'Point in Polygon' 
 
     def group(self):
         """
@@ -286,7 +286,7 @@ class LabelGridPredefinedAlgorithm(QgsProcessingAlgorithm):
 
 
     def svgIconPath(self):
-        return os.path.dirname(__file__) + '/icon/label_grid_icon.png'
+        return os.path.dirname(__file__) + '/icon/point_in_polygon_icon.png'
         
     def shortHelpString(self):
         file = os.path.dirname(__file__) + '/help/label_grid_predefined.help'
