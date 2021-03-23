@@ -85,6 +85,7 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
             QgsProcessingParameterField.Numeric)
         )
 
+        # Chose to calculat distances on the ellipsoid or cartesian
         self.addParameter(
             QgsProcessingParameterBoolean(
                 self.USE_ELLIPSOID,
@@ -196,7 +197,6 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
                             if use_ellipsoid == 'true':
                                 a_distance = distance.measureLine(feature.geometry().asPoint(),a_feature.geometry().asPoint())
                             else:
-                                #a_distance = distance.measureLineProjected(feature.geometry().asPoint(),a_feature.geometry().asPoint())
                                 a_distance = math.sqrt( (feature.geometry().asPoint().x() - a_feature.geometry().asPoint().x())**2 + (feature.geometry().asPoint().y() - a_feature.geometry().asPoint().y())**2)
                             # if distance lower than maximum distance use the lower distance and go on
                             if a_distance < isolation_distance:
@@ -210,7 +210,6 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
                             if use_ellipsoid == 'true':
                                 a_distance = distance.measureLine(feature.geometry().asPoint(),a_feature.geometry().asPoint())
                             else:
-                                #a_distance = distance.measureLineProjected(feature.geometry().asPoint(),a_feature.geometry().asPoint())
                                 a_distance = math.sqrt( (feature.geometry().asPoint().x() - a_feature.geometry().asPoint().x())**2 + (feature.geometry().asPoint().y() - a_feature.geometry().asPoint().y())**2)
                             # if distance lower than maximum distance use the lower distance and go on
                             if a_distance < isolation_distance:
