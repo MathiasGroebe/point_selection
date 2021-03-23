@@ -1,7 +1,7 @@
-Calculates the functional importance after Hormann's idea and store the highest difference of function values. You can choose this field, but it should already exist.
+Calculates the functional importance after Hormann's idea and store the highest difference of function values. You have to choose a float or double field, but it should already exist. Otherwise, the result will be zero.
 
 The field with numeric values should be in case of populated place the population number. Beta is the circle's diameter around the point in meters; there tends the function value towards zero. Use this parameter to ensure a minimum distance between places, which should be selected.
 
-All distances a calculated on the ellipsoid, so the result is not related to a specific map projection.
+Per default, distances are calculated on the ellipsoid, so the result is not related to a specific map projection. Still, it is also possible to use the cartesian distance on demand.
 
 More information can be found here: http://imagico.de/map/osm_populated_en.php

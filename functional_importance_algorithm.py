@@ -39,6 +39,7 @@ from qgis.core import (QgsProcessing,
                        QgsProcessingParameterFeatureSink,
                        QgsProcessingParameterField,
                        QgsProcessingParameterNumber,
+                       QgsProcessingParameterBoolean,
                        QgsWkbTypes,
                        QgsDistanceArea)
 import os, math
@@ -55,6 +56,7 @@ class FunctionalImportanceAlgorithm(QgsProcessingAlgorithm):
     ATTRIBUTE_VALUE_FIELD = 'ATTRIBUTE_VALUE_FIELD'
     BETA_VALUE = 'BETA_VALUE'
     FIELD_FOR_VALUE = 'FIELD_FOR_VALUE'
+    USE_ELLIPSOID = 'USE_ELLIPSOID'
 
     def initAlgorithm(self, config):
 
@@ -67,6 +69,15 @@ class FunctionalImportanceAlgorithm(QgsProcessingAlgorithm):
                 self.INPUT,
                 self.tr('Input layer'),
                 [QgsProcessing.TypeVectorPoint]
+            )
+        )
+
+        # Chose to calculat distances on the ellipsoid or cartesian
+        self.addParameter(
+            QgsProcessingParameterBoolean(
+                self.USE_ELLIPSOID,
+                self.tr('Calculate distances on elllisoid'),
+                defaultValue = True
             )
         )
         
@@ -130,6 +141,7 @@ class FunctionalImportanceAlgorithm(QgsProcessingAlgorithm):
         beta = self.parameterAsInt(parameters, self.BETA_VALUE, context)
         attribute_field = self.parameterAsString(parameters, self.ATTRIBUTE_VALUE_FIELD, context)
         field_value = self.parameterAsString(parameters, self.FIELD_FOR_VALUE, context)
+        use_ellipsoid = self.parameterAsString(parameters, self.USE_ELLIPSOID, context)
         
         # init distance measuring
         distance = QgsDistanceArea()
@@ -164,8 +176,15 @@ class FunctionalImportanceAlgorithm(QgsProcessingAlgorithm):
                         a = float(str(a_feature.attribute(attribute_field)))
                         f = float(str(feature.attribute(attribute_field)))
                             
-                        # calculate distance and function values    
-                        af_distance = distance.measureLine(feature.geometry().asPoint(), a_feature.geometry().asPoint())
+                        # calculate distance and function values  
+                        
+                        if use_ellipsoid == 'true':  
+                            af_distance = distance.measureLine(feature.geometry().asPoint(), a_feature.geometry().asPoint())
+                        else: 
+                            af_distance = math.sqrt( (feature.geometry().asPoint().x() - a_feature.geometry().asPoint().x())**2 + (feature.geometry().asPoint().y() - a_feature.geometry().asPoint().y())**2)
+
+                        #feedback.pushInfo(str(af_distance))
+
                         # TODO: improve formula
                         a_function_value = a * math.exp(-1 * af_distance ** 2 / beta)
                         f_function_value = f * math.exp(-1 * af_distance ** 2 / beta)
