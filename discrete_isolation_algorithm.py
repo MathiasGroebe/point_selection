@@ -40,9 +40,11 @@ from qgis.core import (QgsProcessing,
                        QgsProcessingParameterField,
                        QgsProcessingParameterNumber,
                        QgsProcessingParameterEnum,
+                       QgsProcessingParameterBoolean,
                        QgsWkbTypes,
                        QgsDistanceArea)
 import os
+import math
 
 class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
 
@@ -57,6 +59,7 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
     MAX_ISOLATION = 'MAX_ISOLATION'
     FIELD_FOR_ISOLATION = 'FIELD_FOR_ISOLATION'
     MINMAX = 'MINMAX'
+    USE_ELLIPSOID = 'USE_ELLIPSOID'
 
     def initAlgorithm(self, config):
 
@@ -80,6 +83,14 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
             None,
             self.INPUT,
             QgsProcessingParameterField.Numeric)
+        )
+
+        self.addParameter(
+            QgsProcessingParameterBoolean(
+                self.USE_ELLIPSOID,
+                self.tr('Calculate distances on elllisoid'),
+                defaultValue = True
+            )
         )
 
         # Select min or max
@@ -142,12 +153,16 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
         isolation_value_field = self.parameterAsString(parameters, self.ISOLATION_VALUE_FIELD, context)
         field_for_isolation = self.parameterAsString(parameters, self.FIELD_FOR_ISOLATION, context)
         minmax = self.parameterAsString(parameters, self.MINMAX, context)
+        use_ellipsoid = self.parameterAsString(parameters, self.USE_ELLIPSOID, context)
+        
+        # Write text to output
+        #feedback.pushInfo(use_ellipsoid)
         
         # init distance measuring
         distance = QgsDistanceArea()
         distance.setSourceCrs(source.sourceCrs(), context.transformContext())
         distance.setEllipsoid(context.ellipsoid())
-                
+
         # Compute the number of steps to display within the progress bar and
         # get features from source
         total = 100.0 / source.featureCount() if source.featureCount() else 0
@@ -178,7 +193,11 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
 
                         if f > a :
                             # in case of a lower value calculate distance
-                            a_distance = distance.measureLine(feature.geometry().asPoint(),a_feature.geometry().asPoint())
+                            if use_ellipsoid == 'true':
+                                a_distance = distance.measureLine(feature.geometry().asPoint(),a_feature.geometry().asPoint())
+                            else:
+                                #a_distance = distance.measureLineProjected(feature.geometry().asPoint(),a_feature.geometry().asPoint())
+                                a_distance = math.sqrt( (feature.geometry().asPoint().x() - a_feature.geometry().asPoint().x())**2 + (feature.geometry().asPoint().y() - a_feature.geometry().asPoint().y())**2)
                             # if distance lower than maximum distance use the lower distance and go on
                             if a_distance < isolation_distance:
                                 isolation_distance = a_distance                        
@@ -188,7 +207,11 @@ class DiscreteIsolationAlgorithm(QgsProcessingAlgorithm):
 
                         if f < a :
                             # in case of a higher value calculate distance
-                            a_distance = distance.measureLine(feature.geometry().asPoint(),a_feature.geometry().asPoint())
+                            if use_ellipsoid == 'true':
+                                a_distance = distance.measureLine(feature.geometry().asPoint(),a_feature.geometry().asPoint())
+                            else:
+                                #a_distance = distance.measureLineProjected(feature.geometry().asPoint(),a_feature.geometry().asPoint())
+                                a_distance = math.sqrt( (feature.geometry().asPoint().x() - a_feature.geometry().asPoint().x())**2 + (feature.geometry().asPoint().y() - a_feature.geometry().asPoint().y())**2)
                             # if distance lower than maximum distance use the lower distance and go on
                             if a_distance < isolation_distance:
                                 isolation_distance = a_distance
