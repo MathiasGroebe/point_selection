@@ -6,7 +6,7 @@ QGIS-Plugin for making different point selection algorithms available:
  - [Functional importance](http://imagico.de/map/osm_populated_en.php) (Hormann)
  - [Label grid](https://github.com/mapbox/postgis-vt-util/blob/master/src/LabelGrid.sql) (MapBox)
  
-These QGIS tools can help to identify local minimal and maximal in a point data set. This can be useful for cartographic generalization or analysis. While the Discrete isolation and the Functional importance not depending on the map projection, the Label grid relies on the point data's projection.
+These QGIS tools can help to identify local minimal and maximal in a point data set. This can be useful for cartographic generalization or analysis. While the Discrete isolation and the Functional importance not depending on the map projection, the Label grid relies on the point data's projection. You can use PostgreSQL/PostGIS implementation of the [Discrete isolation](https://github.com/MathiasGroebe/discrete_isolation) or the [Label grid](https://github.com/mapbox/postgis-vt-util/blob/master/src/LabelGrid.sql), which is the better choice for huge datasets.
 
 ## Examples
 
