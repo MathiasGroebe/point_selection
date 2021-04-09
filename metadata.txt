@@ -34,7 +34,7 @@ tags=Generalization, Analysis, Selection, Point
 homepage=https://github.com/MathiasGroebe/point_selection
 category=Generalization
 icon=icon/point_selection_icon.png
-experimental=True
+experimental=False
 deprecated=False
 server=False
 
