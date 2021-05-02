@@ -27,6 +27,7 @@ hasProcessingProvider=yes
 changelog=
 	0.2.2 Label grid is now also possible with an predefined grid
 	0.3 Offers the possibility to use cartesian distances
+	0.4 Create ranking for points in polygon and LabelGrid
 
 # Tags are comma separated with spaces allowed
 tags=Generalization, Analysis, Selection, Point

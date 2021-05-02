@@ -49,6 +49,38 @@ from qgis.core import (QgsProcessing,
                        QgsFeature,
                        QgsProcessingUtils, QgsMessageLog)
 import os, processing
+from operator import itemgetter, attrgetter
+
+class GridPoint:
+  def __init__(self, pointID, gridID, pointValue, rank):
+    self.pointID = pointID
+    self.gridID = gridID
+    self.pointValue = pointValue
+    self.rank = rank
+    
+  def __repr__(self):
+    rep = 'Point(' + str(self.pointID) + ', ' + str(self.gridID) + ', ' + str(self.pointValue) + ', ' + str(self.rank) +')\n'
+    return rep
+
+def rankPoints(point_list, desc):
+    rank = 1
+    grid = 0
+    ranked_list = sorted(point_list, key=attrgetter('gridID', 'pointValue'), reverse = desc)
+    for point in ranked_list:
+        if point.gridID == -1:
+            point.rank = 0
+        else:
+            if grid == point.gridID:
+                point.rank = rank
+                rank = rank + 1
+            else:
+                grid = point.gridID
+                rank = 1
+                point.rank = rank
+                rank = rank + 1
+            
+    return ranked_list
+
 
 class LabelGridPredefinedAlgorithm(QgsProcessingAlgorithm):
 
@@ -113,7 +145,7 @@ class LabelGridPredefinedAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterField(
             self.FIELD_FOR_GRID_ID,
-            self.tr('Field for storing the id of the used grid cell'),
+            self.tr('Field for storing the id of the used polygon'),
             None,
             self.INPUT,
             QgsProcessingParameterField.Numeric)
@@ -123,7 +155,7 @@ class LabelGridPredefinedAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterField(
             self.FIELD_FOR_SELECTION,
-            self.tr('Field for marking the selected points'),
+            self.tr('Field for storing the ranking of the points inside each polygon'),
             None,
             self.INPUT,
             QgsProcessingParameterField.Numeric)
@@ -165,7 +197,7 @@ class LabelGridPredefinedAlgorithm(QgsProcessingAlgorithm):
 
         # check which point is in which grid cell
         points = source.getFeatures()
-        point_dict = {}
+        pointList = []
         # point id, grid id, value
 
         
@@ -177,71 +209,40 @@ class LabelGridPredefinedAlgorithm(QgsProcessingAlgorithm):
             check = True
             for cell in grid_cells:
                 if cell.geometry().contains(point.geometry()):
-                    point_dict[point.id()] = [cell.id(), point[value_field]]
+                    pointList.append(GridPoint(point.id(), cell.id(), point[value_field], None))
                     check = False
 
             # if point is not cotained by one grid cell set values
             if check:
-                point_dict[point.id()] = [-1, -1]
+                pointList.append(GridPoint(point.id(), -1, None, None))
 
             # Update progress
             feedback.setProgress(int(current * total))
 
         
         # search for highest/lowest value
-        grid_dict = {}
-        # grid id, highes/lowest value, id of point
-        
         # Handle input for min/max
-        minmax = 'max'
-        if minmax_input == '1': minmax = 'min'  
-        
+        if minmax_input == '1': 
+            # use min  
+            points = sorted(rankPoints(pointList, False), key=attrgetter('pointID'))
+        else:
+            # use max
+            points = sorted(rankPoints(pointList, True), key=attrgetter('pointID'))   
 
-        for point_key, point_value in point_dict.items():
-            if feedback.isCanceled():
-                break
-                
-            # stop if no value or no grid cell
-            if point_value[1] is not None:
-             
-                
-                # check if grid is already known
-                if point_value[0] in grid_dict:
-
-                    if minmax == 'min':
-                        # if known, check if dict contains lowest value
-                        if point_value[1] < grid_dict.get(point_value[0])[0]:
-                            # update value
-                            grid_dict[point_value[0]] = [point_value[1], point_key]
-
-                    if minmax == 'max':
-                        # if known, check if dict contains highest value
-                        if point_value[1] > grid_dict.get(point_value[0])[0]:
-                            # update value
-                            grid_dict[point_value[0]] = [point_value[1], point_key]
-                # add point
-                else:
-                    # add point with grid_id and value to dict
-                    grid_dict[point_value[0]] = [point_value[1], point_key]
-                
         # bring values to features
         features = source.getFeatures()
 
-        for current, feature in enumerate(features):
+        for current, (feature, point) in enumerate(zip(features, points)):
             # Stop the algorithm if cancel button has been clicked
             if feedback.isCanceled():
                 break
             
             # set grid_id 
-            if feature.id() in point_dict:
-                grid_id = point_dict.get(feature.id())[0]
+            if feature.id() == point.pointID:
                 # write grid_id to point
-                feature[field_for_grid_id] = point_dict.get(feature.id())[0]
-                # check if point is selected
-                if grid_dict.get(grid_id)[1] == feature.id():
-                    feature[field_for_selection] = 1
-                else:
-                    feature[field_for_selection] = 0
+                feature[field_for_grid_id] = point.gridID
+                # write rank to point
+                feature[field_for_selection] = point.rank
 
             # Add a feature in the sink
             sink.addFeature(feature, QgsFeatureSink.FastInsert)
