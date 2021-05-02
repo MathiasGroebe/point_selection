@@ -1,5 +1,5 @@
-Creates a grid and check which point is contained by which grid cell. Afterward, the highest (Max option) point or the lowest (Min option) value in each will set to 1 and all others to 0 in the column for the selected points.
+Creates a grid and check which point is contained by which grid cell. Afterward, the highest (Max option) point or the lowest (Min option) value in each will set to 1, the second-highest/lowest 2, and so on. You can use the resulting ranking of the points and showing one, two, three, or more features in each grid cell.
 
-You can choose which type of grid you prefer for computing: Rectangles, diamonds, or hexagons. The tool will create them according to your defined size. Please provide two numerical columns for storing the grid cell's id and none for holding the selection. The column for the grid id can be used for inspection; a value of -1 means that the point lays in no grid cell.
+You can choose which type of grid you prefer for computing: Rectangles, diamonds, or hexagons. The tool will create them according to your defined size. Please provide two numerical columns for storing the grid cell's id and none for holding the selection. The column for the grid id can be used for inspection; a value of -1 means that the point lies in no grid cell.
 
 Please consider that the grid relies on the projection of the point layer, and the size of the grid cell is created according to the units of the CRS.
