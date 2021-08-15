@@ -6,15 +6,15 @@ QGIS-Plugin for making different point selection algorithms available:
  - [Functional importance](http://imagico.de/map/osm_populated_en.php) (Hormann)
  - [Label grid](https://github.com/mapbox/postgis-vt-util/blob/master/src/LabelGrid.sql) (MapBox)
  
-These QGIS tools can help to identify local minimal and maximal in a point data set. This can be useful for cartographic generalization or analysis. While the Discrete isolation and the Functional importance not depending on the map projection, the Label grid relies on the point data's projection. You can use PostgreSQL/PostGIS implementation of the [Discrete isolation](https://github.com/MathiasGroebe/discrete_isolation) or the [Label grid](https://github.com/mapbox/postgis-vt-util/blob/master/src/LabelGrid.sql), which is the better choice for huge datasets.
+These QGIS tools can help to identify local minima and maxima in a point data set. This can be useful for cartographic generalization or analysis. While the Discrete isolation and the Functional importance are not depending on the map projection, the Label grid relies on the point data's projection. You can use PostgreSQL/PostGIS implementation of the [Discrete isolation](https://github.com/MathiasGroebe/discrete_isolation) or the [Label grid](https://github.com/mapbox/postgis-vt-util/blob/master/src/LabelGrid.sql), which is the better choice for huge datasets.
 
-For further detials please see the the following publication [Scale-Dependent Point Selection Methods for Web Maps](https://doi.org/10.1007/s42489-021-00079-y).
+For further details please see the the following publication: [Scale-Dependent Point Selection Methods for Web Maps](https://doi.org/10.1007/s42489-021-00079-y).
 
 ## Examples
 
 ### Discrete isolation
 
-Calculates the discrete isolation distance for points with numerical attributes. The isolation is the distance from one point to the closest point with a higher (Max option) or lowest (Min option) attribute value. As attribute value can be used every numerical attribute, e.g., the elevation (for peaks) or the population (for populated places). The isolation distance is always calculated in meters based on the ellipsoid.
+Calculates the discrete isolation distance for points with numerical attributes. The isolation is the distance from one point to the closest point with a higher (Max option) or lower (Min option) attribute value. As attribute value can be used every numerical attribute, e.g., the elevation (for peaks) or the population (for populated places). The isolation distance is always calculated in meters based on the ellipsoid.
 
 ![Usage example Discrete isolation](example_images/discrete_isolation_gui.png)
 
@@ -34,7 +34,7 @@ The output can be visualized with a graduated layer.
 
 ### Label grid
 
-Creates a grid and check which point is contained by which grid cell. Afterward, the highest (Max option) point or the lowest (Min option) value in each will set to 1 and all others to 0 in the column for the selected points. You can choose which type of grid you prefer for computing: Rectangles, diamonds, or hexagons. The tool will create them according to your defined size. Please provide two numerical columns for storing the grid cell's id and none for holding the selection. The column for the grid id can be used for inspection; a value of -1 means that the point lays in no grid cell
+Creates a grid and check which point is contained by which grid cell. Afterward, the highest (Max option) point or the lowest (Min option) value in each will set to 1 and all others to 0 in the column for the selected points. You can choose which type of grid you prefer for computing: Rectangles, diamonds, or hexagons. The tool will create them according to your defined size. Please provide two numerical columns for storing the grid cell's id and one for holding the selection. The column for the grid id can be used for inspection; a value of -1 means that the point lays in no grid cell.
 
 ![Usage example Label grid](example_images/label_grid_gui.png)
 
@@ -46,7 +46,7 @@ It is also possible to use any other grid or polygon layer for selecting the hig
 
 ![Example for the usage of other polygons with the Label grid function](example_images/label_grid_predefined_grid.png)
 
-### How to get and prepeare the example data
+### How to get and prepare the example data
 
 The examples are made with data about peaks from OpenStreetMap. You can also use other numerical attributes for points, e.g., the population for cities. For getting the data, you can use the [Overpass API](https://overpass-turbo.eu/). If you want to extract the peaks, you have to search for the tag combination `natural=peak`. A query like this will do this:
 
