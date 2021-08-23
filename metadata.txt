@@ -15,6 +15,7 @@ about=
 	Calculates the discrete isolation distance for points with numerical attributes. The concept is similar to topographic isolation. Still, it uses only the points and not the terrain as continuous surfaces. The isolation is the distance from one point to the closest point with a higher attribute value. As attribute value can be used, e.g., the elevation (for peaks) or the population (for populated places). By graduating the points by the isolation, you can reach nearly spatially equally distributed point visualization, which can also be combined with other attributes. 
 	As another approach, the functional importance method from Hormann is implemented. In this case, the population and a diameter create a function compared with all points. The difference of function values is stored in the attribute table. If the value is greater than zero, the point should be shown and graduate by the values. 
 	The label grid function ranks the points, ordering from highest to lowest, value in each grid cell. First used by MapBox and implemented in PostgreSQL/PostGIS, now in QGIS. The grid stays invisible and is created by the tool. Besides, it is also to use this function with an own grid or any kind of polygon.
+	For further details, please see: https://link.springer.com/10.1007/s42489-021-00079-y
 tracker=https://github.com/MathiasGroebe/point_selection/issues
 repository=https://github.com/MathiasGroebe/point_selection
 # End of mandatory metadata
