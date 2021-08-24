@@ -36,6 +36,7 @@ from .discrete_isolation_algorithm import DiscreteIsolationAlgorithm
 from .functional_importance_algorithm import FunctionalImportanceAlgorithm
 from .label_grid_algorithm import LabelGridAlgorithm
 from .label_grid_predefined_algorithm import LabelGridPredefinedAlgorithm
+from .nearest_neighbor_algorithm import NearestNeighborAlgorithm
 import os
 
 class PointSelectionProvider(QgsProcessingProvider):
@@ -61,6 +62,7 @@ class PointSelectionProvider(QgsProcessingProvider):
         self.addAlgorithm(FunctionalImportanceAlgorithm())
         self.addAlgorithm(LabelGridAlgorithm())
         self.addAlgorithm(LabelGridPredefinedAlgorithm())
+        self.addAlgorithm(NearestNeighborAlgorithm())
 
     def id(self):
         """

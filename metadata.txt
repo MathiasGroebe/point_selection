@@ -6,7 +6,7 @@
 name=Point selection algorithms
 qgisMinimumVersion=3.0
 description=Calculates different measures for selecting points, e.g., the discrete isolation, functional importance and label grid
-version=0.4
+version=0.5
 author=Mathias Gröbe
 email=mathias.groebe@gmail.com
 
@@ -14,7 +14,7 @@ about=
 	This plugin contains tools for the calculation of measures to select points in the process of cartographic generalization. Generally, it helps to find the local maximum or minimum. This function is also useable for analytic purposes.
 	Calculates the discrete isolation distance for points with numerical attributes. The concept is similar to topographic isolation. Still, it uses only the points and not the terrain as continuous surfaces. The isolation is the distance from one point to the closest point with a higher attribute value. As attribute value can be used, e.g., the elevation (for peaks) or the population (for populated places). By graduating the points by the isolation, you can reach nearly spatially equally distributed point visualization, which can also be combined with other attributes. 
 	As another approach, the functional importance method from Hormann is implemented. In this case, the population and a diameter create a function compared with all points. The difference of function values is stored in the attribute table. If the value is greater than zero, the point should be shown and graduate by the values. 
-	The label grid function ranks the points, ordering from highest to lowest, value in each grid cell. First used by MapBox and implemented in PostgreSQL/PostGIS, now in QGIS. The grid stays invisible and is created by the tool. Besides, it is also to use this function with an own grid or any kind of polygon.
+	The label grid function ranks the points, ordering from highest to lowest, value in each grid cell. First used by MapBox and implemented in PostgreSQL/PostGIS, now in QGIS. The grid stays invisible and is created by the tool. Besides, it is also to use this function with an own grid or any kind of polygon. At least there is an option to calculate the distance to the nearest point (Nearest Neighbor) without considering any numerical values.
 	For further details, please see: https://link.springer.com/10.1007/s42489-021-00079-y
 tracker=https://github.com/MathiasGroebe/point_selection/issues
 repository=https://github.com/MathiasGroebe/point_selection
@@ -28,6 +28,7 @@ changelog=
 	0.2.2 Label grid is now also possible with an predefined grid
 	0.3 Offers the possibility to use cartesian distances
 	0.4 Create ranking for points in polygon and LabelGrid
+	0.5 Nearest point tool
 
 # Tags are comma separated with spaces allowed
 tags=Generalization, Analysis, Selection, Point

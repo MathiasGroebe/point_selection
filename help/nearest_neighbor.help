@@ -1,0 +1,3 @@
+Calculates the distance from one point to the nearest point in the dataset. The distance can be calculated in meters based on the ellipsoid per default or cartesian in the CRS units.
+
+The tool needs a single part point layer with two empty numerical columns for storing the distance and the ID of the nearest point. No field with numerical values is required.
