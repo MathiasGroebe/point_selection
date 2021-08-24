@@ -5,8 +5,9 @@ QGIS-Plugin for making different point selection algorithms available:
  - Discrete isolation (Gröbe)
  - [Functional importance](http://imagico.de/map/osm_populated_en.php) (Hormann)
  - [Label grid](https://github.com/mapbox/postgis-vt-util/blob/master/src/LabelGrid.sql) (MapBox)
+ - Nearest Neighbor 
  
-These QGIS tools can help to identify local minima and maxima in a point data set. This can be useful for cartographic generalization or analysis. While the Discrete isolation and the Functional importance are not depending on the map projection, the Label grid relies on the point data's projection. You can use PostgreSQL/PostGIS implementation of the [Discrete isolation](https://github.com/MathiasGroebe/discrete_isolation) or the [Label grid](https://github.com/mapbox/postgis-vt-util/blob/master/src/LabelGrid.sql), which is the better choice for huge datasets.
+These QGIS tools can help to identify local minima and maxima in a point data set. This can be useful for cartographic generalization or analysis. While the Discrete isolation and the Functional importance are not depending on the map projection, the Label grid relies on the point data's projection. You can use PostgreSQL/PostGIS implementation of the [Discrete isolation](https://github.com/MathiasGroebe/discrete_isolation) or the [Label grid](https://github.com/mapbox/postgis-vt-util/blob/master/src/LabelGrid.sql), which is the better choice for huge datasets. The Nearest Neighbor tool calculates the distance to the nearest point, without considering other attributes.
 
 For further details please see the the following publication: [Scale-Dependent Point Selection Methods for Web Maps](https://doi.org/10.1007/s42489-021-00079-y).
 
