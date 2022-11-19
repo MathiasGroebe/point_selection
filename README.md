@@ -2,7 +2,7 @@
 
 QGIS-Plugin for making different point selection algorithms available:
 
- - Discrete isolation (Gröbe)
+ - [Discrete isolation](https://doi.org/10.1007/s42489-021-00079-y) (Gröbe)
  - [Functional importance](http://imagico.de/map/osm_populated_en.php) (Hormann)
  - [Label grid](https://github.com/mapbox/postgis-vt-util/blob/master/src/LabelGrid.sql) (MapBox)
  - Nearest Neighbor 
