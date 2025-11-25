@@ -46,6 +46,8 @@ from qgis.core import (QgsProcessing,
 import os
 import math
 
+from .helper import PointSelectionTools
+
 class NearestNeighborAlgorithm(QgsProcessingAlgorithm):
 
 
@@ -141,6 +143,10 @@ class NearestNeighborAlgorithm(QgsProcessingAlgorithm):
         # get features from source
         total = 100.0 / source.featureCount() if source.featureCount() else 0
         features = source.getFeatures()
+
+        feedback.pushInfo(PointSelectionTools.getPluginName())
+        feedback.pushInfo(self.name())
+        feedback.pushInfo("Plugin Version: " + PointSelectionTools.getPluginVersion())
 
         # create index
         feature_index = QgsSpatialIndex(source.getFeatures())

@@ -41,6 +41,8 @@ from qgis.core import (QgsProcessing,
                        QgsDistanceArea)
 import os, math
 
+from .helper import PointSelectionTools
+
 class FunctionalImportanceAlgorithm(QgsProcessingAlgorithm):
 
 
@@ -150,6 +152,9 @@ class FunctionalImportanceAlgorithm(QgsProcessingAlgorithm):
         total = 100.0 / source.featureCount() if source.featureCount() else 0
         features = source.getFeatures()
         
+        feedback.pushInfo(PointSelectionTools.getPluginName())
+        feedback.pushInfo(self.name())
+        feedback.pushInfo("Plugin Version: " + PointSelectionTools.getPluginVersion())        
         
         for current, feature in enumerate(features):
             # Stop the algorithm if cancel button has been clicked

@@ -45,6 +45,7 @@ from qgis.core import (QgsProcessing,
                        QgsField,
                        QgsFeature,
                        QgsProcessingUtils, QgsMessageLog)
+from .helper import PointSelectionTools
 import os, processing
 from operator import itemgetter, attrgetter
 
@@ -233,6 +234,10 @@ class LabelGridAlgorithm(QgsProcessingAlgorithm):
         # Compute the number of steps to display within the progress bar and
         # get features from source
         total = 100.0 / source.featureCount() if source.featureCount() else 0
+
+        feedback.pushInfo(PointSelectionTools.getPluginName())
+        feedback.pushInfo(self.name())
+        feedback.pushInfo("Plugin Version: " + PointSelectionTools.getPluginVersion())
 
         # check which point is in which grid cell
         points = source.getFeatures()
