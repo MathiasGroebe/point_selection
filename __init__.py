@@ -26,14 +26,39 @@ __author__ = 'Mathias Gröbe'
 __date__ = '2020-12-07'
 __copyright__ = '(C) 2020 by Mathias Gröbe'
 
+import os
+import sys
+import inspect
 
 # noinspection PyPep8Naming
-def classFactory(iface):  # pylint: disable=invalid-name
+# pylint: disable=invalid-name
+
+
+from qgis.core import QgsProcessingAlgorithm, QgsApplication
+from .point_selection_provider import PointSelectionProvider
+
+
+def classFactory(iface):  
     """Load PointSelection class from file PointSelection.
 
     :param iface: A QGIS interface instance.
     :type iface: QgsInterface
     """
-    #
-    from .point_selection import PointSelectionPlugin
-    return PointSelectionPlugin()
+
+    return PointSelectionPlugin(iface)
+
+
+class PointSelectionPlugin:
+
+    def __init__(self, iface):
+        self.iface = iface
+
+    def initProcessing(self):
+        self.provider = PointSelectionProvider()
+        QgsApplication.processingRegistry().addProvider(self.provider)
+
+    def initGui(self):
+        self.initProcessing()
+
+    def unload(self):
+        QgsApplication.processingRegistry().removeProvider(self.provider)
